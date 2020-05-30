@@ -2127,6 +2127,16 @@ nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64_t msgid, in
     return msgtype;
 }
 
+API NC_MSG_TYPE 
+nc_recv_xml(struct nc_session *session, int timeout, uint64_t msgid, struct lyxml_elem **xml)
+{
+    NC_MSG_TYPE msgtype = 0; /* NC_MSG_ERROR */
+    
+    msgtype = get_msg(session, timeout, msgid, xml);
+    
+    return msgtype;
+}
+
 API NC_MSG_TYPE
 nc_recv_notif(struct nc_session *session, int timeout, struct nc_notif **notif)
 {

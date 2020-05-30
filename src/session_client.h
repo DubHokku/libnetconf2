@@ -576,6 +576,8 @@ int nc_session_ntf_thread_running(const struct nc_session *session);
 NC_MSG_TYPE nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64_t msgid, int timeout,
                           int parseroptions, struct nc_reply **reply);
 
+NC_MSG_TYPE nc_recv_xml(struct nc_session *session, int timeout, uint64_t msgid, struct lyxml_elem **xml);
+
 /**
  * @brief Receive NETCONF Notification.
  *
