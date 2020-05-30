@@ -2132,6 +2132,20 @@ nc_recv_xml(struct nc_session *session, int timeout, uint64_t msgid, struct lyxm
 {
     NC_MSG_TYPE msgtype = 0; /* NC_MSG_ERROR */
     
+    if (!session) {
+        ERRARG("session");
+        return NC_MSG_ERROR;
+    } else if (!msgid) {
+        ERRARG("msgid");
+        return NC_MSG_ERROR;
+    } else if (!xml) {
+        ERRARG("reply");
+        return NC_MSG_ERROR;
+    } else if ((session->status != NC_STATUS_RUNNING) || (session->side != NC_CLIENT)) {
+        ERR("Session %u: invalid session to receive RPC replies.", session->id);
+        return NC_MSG_ERROR;
+    }
+    
     msgtype = get_msg(session, timeout, msgid, xml);
     
     return msgtype;
