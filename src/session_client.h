@@ -577,6 +577,7 @@ NC_MSG_TYPE nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64
                           int parseroptions, struct nc_reply **reply);
 
 NC_MSG_TYPE nc_recv_xml(struct nc_session *session, int timeout, uint64_t msgid, struct lyxml_elem **xml);
+NC_MSG_TYPE nc_recv_rpc_gen( struct nc_rpc* rp_request, char* data );
 
 /**
  * @brief Receive NETCONF Notification.

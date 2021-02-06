@@ -2127,6 +2127,38 @@ nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64_t msgid, in
     return msgtype;
 }
 
+API NC_MSG_TYPE
+nc_recv_rpc_gen( struct nc_rpc* rp_request, char* data )
+{
+    
+    switch( rp_request->type ) 
+    {
+    case NC_RPC_ACT_GENERIC:
+        rpc_gen = ( struct nc_rpc_act_generic* )rp_request;
+
+        if( rpc_gen->has_data ) 
+        {
+            data = rpc_gen->content.data;
+            dofree = 0;
+        } 
+        else 
+        {
+            data = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS
+                                 | (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
+            if( !data ) 
+            {
+                return NC_MSG_ERROR;
+            }
+        }
+    break;
+    default:
+        std::cout << "rpc->type" << rp_request->type << std::endl;
+        return NC_MSG_ERROR;
+    break;
+    
+    return 0;
+}
+
 API NC_MSG_TYPE 
 nc_recv_xml(struct nc_session *session, int timeout, uint64_t msgid, struct lyxml_elem **xml)
 {
