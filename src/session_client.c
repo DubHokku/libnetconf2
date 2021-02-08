@@ -2134,6 +2134,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
     switch( rp_request->type ) 
     {
         case NC_RPC_ACT_GENERIC:
+        printf( "get NC_RPC_ACT_GENERIC /n" );
         rpc_gen = ( struct nc_rpc_act_generic* )rp_request;
 
         if( rpc_gen->has_data ) 
@@ -2153,6 +2154,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
         break;
         default:
         // std::cout << "rpc->type" << rp_request->type << std::endl;
+        printf( "NC_MSG_TYPE %d \n", rp_request->type );
         return NC_MSG_ERROR;
         break;
     }
