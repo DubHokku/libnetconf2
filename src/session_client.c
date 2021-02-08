@@ -2141,6 +2141,10 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
     arg.session = session;
     arg.len = 0;
     
+    struct lyd_node* print_mem;
+    char *show_request;
+    
+    
     struct nc_rpc_act_generic* rpc_gen;
     switch( rp_request->type ) 
     {
@@ -2149,16 +2153,17 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
 
         if( rpc_gen->has_data ) 
         {
-            data = rpc_gen->content.data;
+            // data = rpc_gen->content.data;
+            print_mem = rpc_gen->content.data;
             ERR( "rpc_gen->has_data" );
             // dofree = 0;
         } 
         else 
         {
             ERR( "data = lyd_parse_mem" );
-            ERR( rpc_gen->content.xml_str );
-            data = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS
-                                 | (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
+            ERR( "%s \n", rpc_gen->content.xml_str );
+            // data = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS| (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
+            print_mem = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS| (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
             if( !data ) 
             {
                 return NC_MSG_ERROR;
@@ -2170,8 +2175,13 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
         break;
     }
     ERR( "%s", rpc_gen->content.xml_str );
+    
+    
+    lyd_print_mem( &show_request, print_mem, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
     // lyd_print_clb( nc_write_xmlclb, (void *)&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
-    lyd_print_clb( NULL, ( void* )&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
+    // lyd_print_clb( NULL, ( void* )&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
+    ERR( "show_request %s", show_request );
+    
     
     return NC_MSG_RPC;
 }
