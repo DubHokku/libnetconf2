@@ -2139,7 +2139,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* da
         if( rpc_gen->has_data ) 
         {
             data = rpc_gen->content.data;
-            dofree = 0;
+            // dofree = 0;
         } 
         else 
         {
@@ -2152,11 +2152,11 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* da
         }
         break;
         default:
-        std::cout << "rpc->type" << rp_request->type << std::endl;
+        // std::cout << "rpc->type" << rp_request->type << std::endl;
         return NC_MSG_ERROR;
         break;
     }
-    return 0;
+    return msgtype;
 }
 
 API NC_MSG_TYPE 
