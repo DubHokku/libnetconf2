@@ -2159,7 +2159,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* te
     }
     
     lyd_print_mem( &text_request, lyd_request, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
-    ERR( "text_request %s \n", text_request );
+    // ERR( "text_request %s \n", text_request );
     
     
     return NC_MSG_RPC;
