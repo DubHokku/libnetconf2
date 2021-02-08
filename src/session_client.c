@@ -2128,12 +2128,12 @@ nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64_t msgid, in
 }
 
 API NC_MSG_TYPE
-nc_recv_rpc_gen( struct nc_rpc* rp_request, char* data )
+nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* data )
 {
     
     switch( rp_request->type ) 
     {
-    case NC_RPC_ACT_GENERIC:
+        case NC_RPC_ACT_GENERIC:
         rpc_gen = ( struct nc_rpc_act_generic* )rp_request;
 
         if( rpc_gen->has_data ) 
@@ -2150,12 +2150,12 @@ nc_recv_rpc_gen( struct nc_rpc* rp_request, char* data )
                 return NC_MSG_ERROR;
             }
         }
-    break;
-    default:
+        break;
+        default:
         std::cout << "rpc->type" << rp_request->type << std::endl;
         return NC_MSG_ERROR;
-    break;
-    
+        break;
+    }
     return 0;
 }
 
