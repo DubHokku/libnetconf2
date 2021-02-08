@@ -2133,7 +2133,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
     struct wclb_arg 
     {
         struct nc_session *session;
-        char buf[WRITE_BUFSIZE];
+        char buf[1024];
         size_t len;
     };
     
@@ -2170,7 +2170,8 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
         break;
     }
     ERR( "%s", rpc_gen->content.xml_str );
-    lyd_print_clb( nc_write_xmlclb, (void *)&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
+    // lyd_print_clb( nc_write_xmlclb, (void *)&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
+    lyd_print_clb( NULL, ( void* )&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
     
     return NC_MSG_RPC;
 }
