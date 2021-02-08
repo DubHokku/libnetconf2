@@ -2139,10 +2139,13 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
         if( rpc_gen->has_data ) 
         {
             data = rpc_gen->content.data;
+            ERR( "rpc_gen->has_data" );
             // dofree = 0;
         } 
         else 
         {
+            ERR( "data = lyd_parse_mem" );
+            ERR( rpc_gen->content.xml_str );
             data = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS
                                  | (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
             if( !data ) 
@@ -2156,6 +2159,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct l
         return NC_MSG_ERROR;
         break;
     }
+    ERR( "%s", rpc_gen->content.xml_str );
     return NC_MSG_RPC;
 }
 
