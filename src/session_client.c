@@ -2128,7 +2128,7 @@ nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64_t msgid, in
 }
 
 API NC_MSG_TYPE
-nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* data )
+nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct lyd_node* data )
 {
     struct nc_rpc_act_generic* rpc_gen;
     switch( rp_request->type ) 
