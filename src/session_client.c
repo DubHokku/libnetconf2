@@ -2156,7 +2156,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* da
         return NC_MSG_ERROR;
         break;
     }
-    return msgtype;
+    return NC_MSG_RPC;
 }
 
 API NC_MSG_TYPE 
