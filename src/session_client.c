@@ -2128,59 +2128,38 @@ nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64_t msgid, in
 }
 
 API NC_MSG_TYPE
-nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, struct lyd_node* data )
+nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* text_request )
 {
-    struct wclb_arg 
-    {
-        struct nc_session *session;
-        char buf[1024];
-        size_t len;
-    };
-    
-    struct wclb_arg arg;
-    arg.session = session;
-    arg.len = 0;
-    
-    struct lyd_node* print_mem;
-    char *show_request;
-    
-    
-    struct nc_rpc_act_generic* rpc_gen;
+    struct nc_rpc_act_generic* rpc_gen;    
+    struct lyd_node* lyd_request;
+
     switch( rp_request->type ) 
     {
         case NC_RPC_ACT_GENERIC:
-        rpc_gen = ( struct nc_rpc_act_generic* )rp_request;
-
-        if( rpc_gen->has_data ) 
-        {
-            // data = rpc_gen->content.data;
-            print_mem = rpc_gen->content.data;
-            ERR( "rpc_gen->has_data" );
-            // dofree = 0;
-        } 
-        else 
-        {
-            ERR( "data = lyd_parse_mem" );
-            ERR( "%s \n", rpc_gen->content.xml_str );
-            // data = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS| (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
-            print_mem = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS| (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
-            if( !data ) 
+            
+            rpc_gen = ( struct nc_rpc_act_generic* )rp_request;
+            if( rpc_gen->has_data ) 
             {
-                return NC_MSG_ERROR;
+
+                lyd_request = rpc_gen->content.data;
+                // dofree = 0;
+            } 
+            else 
+            {
+                lyd_request = lyd_parse_mem( session->ctx, rpc_gen->content.xml_str, LYD_XML, LYD_OPT_RPC | LYD_OPT_NOEXTDEPS| (session->flags & NC_SESSION_CLIENT_NOT_STRICT ? 0 : LYD_OPT_STRICT), NULL );
+                if( !lyd_request ) 
+                {
+                    return NC_MSG_ERROR;
+                }
             }
-        }
         break;
         default:
-        return NC_MSG_ERROR;
+            return NC_MSG_ERROR;
         break;
     }
-    ERR( "%s", rpc_gen->content.xml_str );
     
-    
-    lyd_print_mem( &show_request, print_mem, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
-    // lyd_print_clb( nc_write_xmlclb, (void *)&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
-    // lyd_print_clb( NULL, ( void* )&arg, data, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
-    ERR( "show_request %s", show_request );
+    lyd_print_mem( &text_request, print_mem, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
+    ERR( "text_request %s \n", text_request );
     
     
     return NC_MSG_RPC;
