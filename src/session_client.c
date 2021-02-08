@@ -2128,7 +2128,7 @@ nc_recv_reply(struct nc_session *session, struct nc_rpc *rpc, uint64_t msgid, in
 }
 
 API NC_MSG_TYPE
-nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* text_request )
+nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char** text_request )
 {
     struct nc_rpc_act_generic* rpc_gen;    
     struct lyd_node* lyd_request;
@@ -2158,7 +2158,7 @@ nc_show_rpc_gen( struct nc_session *session, struct nc_rpc* rp_request, char* te
         break;
     }
     
-    lyd_print_mem( &text_request, lyd_request, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
+    lyd_print_mem( text_request, lyd_request, LYD_XML, LYP_WITHSIBLINGS | LYP_NETCONF );
     // ERR( "text_request %s \n", text_request );
     
     
